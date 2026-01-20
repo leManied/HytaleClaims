@@ -33,7 +33,7 @@ import java.util.UUID;
 
 /**
  * Main command for EasyClaims plugin.
- * All functionality is accessed through /easyclaims <subcommand>
+ * All functionality is accessed through /claim <subcommand>
  *
  * Subcommands:
  *   gui                      - Open chunk visualizer GUI
@@ -63,7 +63,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     private static final Color YELLOW = new Color(255, 255, 85);
 
     public EasyClaimsCommand(EasyClaims plugin) {
-        super("easyclaims", "Land claiming commands");
+        super("claim", "Land claiming commands");
         this.plugin = plugin;
         setAllowsExtraArguments(true);  // Allow any number of arguments
         requirePermission("easyclaims.use");
@@ -77,7 +77,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
         }
         String[] allArgs = input.split("\\s+");
         // Skip the first argument if it's the command name
-        if (allArgs.length > 0 && allArgs[0].equalsIgnoreCase("easyclaims")) {
+        if (allArgs.length > 0 && allArgs[0].equalsIgnoreCase("claim")) {
             String[] args = new String[allArgs.length - 1];
             System.arraycopy(allArgs, 1, args, 0, allArgs.length - 1);
             return args;
@@ -197,10 +197,10 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     /**
      * Admin command to claim a chunk as a fake player for testing protection.
      * Usage:
-     *   /easyclaims admin fakeclaim - Claim current chunk as fake player
-     *   /easyclaims admin fakeclaim trust <level> - Trust yourself to fake claims
-     *   /easyclaims admin fakeclaim untrust - Remove your trust from fake claims
-     *   /easyclaims admin fakeclaim remove - Remove all fake player claims
+     *   /claim admin fakeclaim - Claim current chunk as fake player
+     *   /claim admin fakeclaim trust <level> - Trust yourself to fake claims
+     *   /claim admin fakeclaim untrust - Remove your trust from fake claims
+     *   /claim admin fakeclaim remove - Remove all fake player claims
      */
     private void handleFakeClaim(PlayerRef playerData, String[] args, Store<EntityStore> store, Ref<EntityStore> playerRef, World world) {
         // args[0] = "admin", args[1] = "fakeclaim", args[2] = subcommand (optional)
@@ -236,9 +236,9 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
             playerData.sendMessage(Message.raw("You are NOT trusted - try to break/pickup items to test protection!").color(YELLOW));
             playerData.sendMessage(Message.raw("").color(GRAY));
             playerData.sendMessage(Message.raw("Commands:").color(AQUA));
-            playerData.sendMessage(Message.raw("  /easyclaims admin fakeclaim trust <level> - Trust yourself").color(GRAY));
-            playerData.sendMessage(Message.raw("  /easyclaims admin fakeclaim untrust - Remove your trust").color(GRAY));
-            playerData.sendMessage(Message.raw("  /easyclaims admin fakeclaim remove - Remove all fake claims").color(GRAY));
+            playerData.sendMessage(Message.raw("  /claim admin fakeclaim trust <level> - Trust yourself").color(GRAY));
+            playerData.sendMessage(Message.raw("  /claim admin fakeclaim untrust - Remove your trust").color(GRAY));
+            playerData.sendMessage(Message.raw("  /claim admin fakeclaim remove - Remove all fake claims").color(GRAY));
 
         } else if (subCmd.equalsIgnoreCase("trust")) {
             // Trust the player to fake claims
@@ -281,18 +281,18 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
 
     private void showAdminHelp(PlayerRef playerData) {
         playerData.sendMessage(Message.raw("=== EasyClaims Admin Commands ===").color(GOLD));
-        playerData.sendMessage(Message.raw("/easyclaims admin gui - Open claim manager (admin mode)").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin config - Show current settings").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin set <key> <value> - Change a setting").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin reload - Reload config from file").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin unclaim - Remove claim at your location").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin unclaim <player> - Remove all claims from player").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin gui - Open claim manager (admin mode)").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin config - Show current settings").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin set <key> <value> - Change a setting").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin reload - Reload config from file").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin unclaim - Remove claim at your location").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin unclaim <player> - Remove all claims from player").color(GRAY));
         playerData.sendMessage(Message.raw("").color(GRAY));
         playerData.sendMessage(Message.raw("=== Testing Commands ===").color(GOLD));
-        playerData.sendMessage(Message.raw("/easyclaims admin fakeclaim - Claim chunk as fake player (for testing)").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin fakeclaim trust <level> - Trust yourself to test").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin fakeclaim untrust - Remove trust to test blocking").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims admin fakeclaim remove - Remove all fake claims").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin fakeclaim - Claim chunk as fake player (for testing)").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin fakeclaim trust <level> - Trust yourself to test").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin fakeclaim untrust - Remove trust to test blocking").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim admin fakeclaim remove - Remove all fake claims").color(GRAY));
         playerData.sendMessage(Message.raw("").color(GRAY));
         playerData.sendMessage(Message.raw("Settings: starting, perhour, max, buffer").color(AQUA));
     }
@@ -427,7 +427,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
 
         if (claims.isEmpty()) {
             playerData.sendMessage(Message.raw("You don't have any claims.").color(YELLOW));
-            playerData.sendMessage(Message.raw("Use /easyclaims claim to claim land!").color(GRAY));
+            playerData.sendMessage(Message.raw("Use /claim claim to claim land!").color(GRAY));
             return;
         }
 
@@ -443,7 +443,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     // ===== TRUST =====
     private void handleTrust(PlayerRef playerData, String playerInput, String levelInput) {
         if (playerInput == null || playerInput.isEmpty()) {
-            playerData.sendMessage(Message.raw("Usage: /easyclaims trust <player> [level]").color(RED));
+            playerData.sendMessage(Message.raw("Usage: /claim trust <player> [level]").color(RED));
             playerData.sendMessage(Message.raw("Levels: use, container, workstation, build").color(GRAY));
             return;
         }
@@ -489,7 +489,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     // ===== UNTRUST =====
     private void handleUntrust(PlayerRef playerData, String playerInput) {
         if (playerInput == null || playerInput.isEmpty()) {
-            playerData.sendMessage(Message.raw("Usage: /easyclaims untrust <player>").color(RED));
+            playerData.sendMessage(Message.raw("Usage: /claim untrust <player>").color(RED));
             return;
         }
 
@@ -542,7 +542,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
 
         if (trustedPlayers.isEmpty()) {
             playerData.sendMessage(Message.raw("You haven't trusted anyone.").color(YELLOW));
-            playerData.sendMessage(Message.raw("Use /easyclaims trust <player> [level]").color(GRAY));
+            playerData.sendMessage(Message.raw("Use /claim trust <player> [level]").color(GRAY));
             return;
         }
 
@@ -580,16 +580,16 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     // ===== HELP =====
     private void showHelp(PlayerRef playerData) {
         playerData.sendMessage(Message.raw("=== EasyClaims Commands ===").color(GOLD));
-        playerData.sendMessage(Message.raw("/easyclaims gui - Open claim manager").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims settings - Manage trusted players").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims claim - Claim current chunk").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims unclaim - Unclaim current chunk").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims unclaimall - Remove all claims").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims list - List your claims").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims trust <player> [level] - Trust player").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims untrust <player> - Remove trust").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims trustlist - List trusted players").color(GRAY));
-        playerData.sendMessage(Message.raw("/easyclaims playtime - Show your stats").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim gui - Open claim manager").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim settings - Manage trusted players").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim claim - Claim current chunk").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim unclaim - Unclaim current chunk").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim unclaimall - Remove all claims").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim list - List your claims").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim trust <player> [level] - Trust player").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim untrust <player> - Remove trust").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim trustlist - List trusted players").color(GRAY));
+        playerData.sendMessage(Message.raw("/claim playtime - Show your stats").color(GRAY));
         playerData.sendMessage(Message.raw("").color(GRAY));
         playerData.sendMessage(Message.raw("Trust levels: use, container, workstation, build").color(AQUA));
     }
@@ -615,22 +615,22 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
         playerData.sendMessage(Message.raw("Claim buffer zone: " + bufferText).color(AQUA));
         playerData.sendMessage(Message.raw("").color(GRAY));
         playerData.sendMessage(Message.raw("To change these settings:").color(GRAY));
-        playerData.sendMessage(Message.raw("  /easyclaims admin set starting <number>").color(YELLOW));
-        playerData.sendMessage(Message.raw("  /easyclaims admin set perhour <number>").color(YELLOW));
-        playerData.sendMessage(Message.raw("  /easyclaims admin set max <number>").color(YELLOW));
-        playerData.sendMessage(Message.raw("  /easyclaims admin set buffer <number>").color(YELLOW));
+        playerData.sendMessage(Message.raw("  /claim admin set starting <number>").color(YELLOW));
+        playerData.sendMessage(Message.raw("  /claim admin set perhour <number>").color(YELLOW));
+        playerData.sendMessage(Message.raw("  /claim admin set max <number>").color(YELLOW));
+        playerData.sendMessage(Message.raw("  /claim admin set buffer <number>").color(YELLOW));
     }
 
     private void handleSet(PlayerRef playerData, String key, String valueStr) {
         if (key == null || valueStr == null) {
             playerData.sendMessage(Message.raw("How to change settings:").color(GOLD));
-            playerData.sendMessage(Message.raw("  /easyclaims admin set starting <number>").color(YELLOW));
+            playerData.sendMessage(Message.raw("  /claim admin set starting <number>").color(YELLOW));
             playerData.sendMessage(Message.raw("    How many claims new players start with").color(GRAY));
-            playerData.sendMessage(Message.raw("  /easyclaims admin set perhour <number>").color(YELLOW));
+            playerData.sendMessage(Message.raw("  /claim admin set perhour <number>").color(YELLOW));
             playerData.sendMessage(Message.raw("    Extra claims earned per hour played").color(GRAY));
-            playerData.sendMessage(Message.raw("  /easyclaims admin set max <number>").color(YELLOW));
+            playerData.sendMessage(Message.raw("  /claim admin set max <number>").color(YELLOW));
             playerData.sendMessage(Message.raw("    Maximum claims any player can have").color(GRAY));
-            playerData.sendMessage(Message.raw("  /easyclaims admin set buffer <number>").color(YELLOW));
+            playerData.sendMessage(Message.raw("  /claim admin set buffer <number>").color(YELLOW));
             playerData.sendMessage(Message.raw("    Buffer zone in chunks around claims (0 = disabled)").color(GRAY));
             return;
         }
@@ -639,7 +639,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
         try {
             value = Integer.parseInt(valueStr);
         } catch (NumberFormatException e) {
-            playerData.sendMessage(Message.raw("Please enter a number! Example: /easyclaims admin set max 100").color(RED));
+            playerData.sendMessage(Message.raw("Please enter a number! Example: /claim admin set max 100").color(RED));
             return;
         }
 

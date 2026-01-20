@@ -8,7 +8,7 @@ Protect your builds on Hytale servers! Claim land, see it on your map, and share
 
 1. **Install**: Download the [latest release](../../releases/latest) and drop the JAR into your server's `mods/` folder
 2. **Restart** your server
-3. **Claim land**: Stand where you want to protect and type `/easyclaims claim`
+3. **Claim land**: Stand where you want to protect and type `/claim claim`
 4. **See your claims**: Open your map (M) - claimed chunks show in color!
 
 That's it! Your builds are now protected.
@@ -28,60 +28,60 @@ That's it! Your builds are now protected.
 
 ## Commands
 
-All commands use `/easyclaims`.
+All commands use `/claim`.
 
 ### GUI Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/easyclaims gui` | Open the claim map GUI (see and manage claims visually) |
-| `/easyclaims settings` | Open settings GUI to manage trusted players |
+| `/claim gui` | Open the claim map GUI (see and manage claims visually) |
+| `/claim settings` | Open settings GUI to manage trusted players |
 
 ### Essential Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/easyclaims claim` | Claim the chunk you're standing in |
-| `/easyclaims unclaim` | Remove your claim on current chunk |
-| `/easyclaims list` | List all your claimed chunks |
-| `/easyclaims help` | Show all available commands |
+| `/claim claim` | Claim the chunk you're standing in |
+| `/claim unclaim` | Remove your claim on current chunk |
+| `/claim list` | List all your claimed chunks |
+| `/claim help` | Show all available commands |
 
 ### Sharing With Friends
 
 | Command | What it does |
 |---------|--------------|
-| `/easyclaims trust PlayerName` | Give full access to a player |
-| `/easyclaims trust PlayerName use` | Let them use doors/buttons only |
-| `/easyclaims trust PlayerName container` | Let them open chests too |
-| `/easyclaims untrust PlayerName` | Remove a player's access |
-| `/easyclaims trustlist` | See who you've trusted |
+| `/claim trust PlayerName` | Give full access to a player |
+| `/claim trust PlayerName use` | Let them use doors/buttons only |
+| `/claim trust PlayerName container` | Let them open chests too |
+| `/claim untrust PlayerName` | Remove a player's access |
+| `/claim trustlist` | See who you've trusted |
 
-**Tip:** Use `/easyclaims settings` for an easier way to manage trusted players with a GUI!
+**Tip:** Use `/claim settings` for an easier way to manage trusted players with a GUI!
 
 ### Other Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/easyclaims unclaimall` | Remove ALL your claims (careful!) |
-| `/easyclaims playtime` | Check your playtime and claim slots |
+| `/claim unclaimall` | Remove ALL your claims (careful!) |
+| `/claim playtime` | Check your playtime and claim slots |
 
 ### Admin Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/easyclaims admin gui` | Open claim manager GUI (admin mode) |
-| `/easyclaims admin config` | Show current settings |
-| `/easyclaims admin set <key> <value>` | Change a setting (saves immediately) |
-| `/easyclaims admin reload` | Reload config from file |
-| `/easyclaims admin unclaim` | Remove claim at your location (any owner) |
-| `/easyclaims admin unclaim <player>` | Remove ALL claims from a player |
+| `/claim admin gui` | Open claim manager GUI (admin mode) |
+| `/claim admin config` | Show current settings |
+| `/claim admin set <key> <value>` | Change a setting (saves immediately) |
+| `/claim admin reload` | Reload config from file |
+| `/claim admin unclaim` | Remove claim at your location (any owner) |
+| `/claim admin unclaim <player>` | Remove ALL claims from a player |
 
 **Settings you can change:**
 ```
-/easyclaims admin set starting 6      # Starting claim slots for new players
-/easyclaims admin set perhour 3       # Extra claims earned per hour
-/easyclaims admin set max 100         # Maximum claims any player can have
-/easyclaims admin set buffer 2        # Buffer zone in chunks (0 = disabled)
+/claim admin set starting 6      # Starting claim slots for new players
+/claim admin set perhour 3       # Extra claims earned per hour
+/claim admin set max 100         # Maximum claims any player can have
+/claim admin set buffer 2        # Buffer zone in chunks (0 = disabled)
 ```
 
 ---
@@ -92,14 +92,14 @@ When you trust someone, you can choose how much access they get:
 
 | Level | Command Example | What They Can Do |
 |-------|-----------------|------------------|
-| **use** | `/easyclaims trust Steve use` | Open doors, press buttons, flip levers |
-| **container** | `/easyclaims trust Steve container` | Above + open chests, barrels |
-| **workstation** | `/easyclaims trust Steve workstation` | Above + use furnaces, crafting tables |
-| **build** | `/easyclaims trust Steve build` | Full access - can break and place blocks |
+| **use** | `/claim trust Steve use` | Open doors, press buttons, flip levers |
+| **container** | `/claim trust Steve container` | Above + open chests, barrels |
+| **workstation** | `/claim trust Steve workstation` | Above + use furnaces, crafting tables |
+| **build** | `/claim trust Steve build` | Full access - can break and place blocks |
 
 **Note:** If you don't specify a level, players get full `build` access.
 
-**Tip:** Use `/easyclaims trust PlayerName use` for visitors who just need to get through doors!
+**Tip:** Use `/claim trust PlayerName use` for visitors who just need to get through doors!
 
 ---
 
@@ -123,7 +123,7 @@ The longer you play, the more land you can claim:
 | 5 hours | 14 chunks |
 | 10 hours | 24 chunks |
 
-Use `/easyclaims playtime` to check your progress!
+Use `/claim playtime` to check your progress!
 
 ---
 
@@ -158,7 +158,7 @@ Ask your server admin to grant you the `easyclaims.use` permission.
 Try closing and reopening your map, or reconnect to the server.
 
 ### Can't claim?
-- Check if you have available slots: `/easyclaims playtime`
+- Check if you have available slots: `/claim playtime`
 - Make sure the chunk isn't already claimed by someone else
 - You might be too close to another player's claim (2-chunk buffer zone)
 
