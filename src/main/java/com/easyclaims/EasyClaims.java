@@ -79,7 +79,7 @@ public class EasyClaims extends JavaPlugin {
         claimManager = new ClaimManager(claimStorage, playtimeStorage, config, blockGroups);
         playtimeManager = new PlaytimeManager(playtimeStorage, config);
 
-        // Register the main command (all functionality under /easyclaims)
+        // Register the main command (all functionality under /claim)
         getCommandRegistry().registerCommand(new EasyClaimsCommand(this));
 
         // Register protection event listeners (for PlayerInteractEvent)

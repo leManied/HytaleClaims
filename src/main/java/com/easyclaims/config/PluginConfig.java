@@ -11,7 +11,7 @@ import java.nio.file.Path;
 
 /**
  * Configuration manager for EasyClaims plugin.
- * Supports in-game configuration via /easyclaims command.
+ * Supports in-game configuration via /claim command.
  */
 public class PluginConfig {
     private final Path configFile;
