@@ -335,7 +335,7 @@ Located at `Server/permissions.json`:
 ### EasyClaims Permissions
 | Permission | Description |
 |------------|-------------|
-| `easyclaims.use` | Basic access to /easyclaims command |
+| `easyclaims.use` | Basic access to /claim command |
 | `easyclaims.admin` | Admin commands (config, set, reload, unclaim) |
 
 ## Messages (No Minecraft Color Codes!)
