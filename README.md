@@ -145,7 +145,7 @@ perm group add admin easyclaims.admin
 ```
 
 The `easyclaims.use` permission grants access to all player commands (claim, unclaim, trust, etc.).
-The `easyclaims.admin` permission grants access to `/easyclaims admin` commands (config, set, reload).
+The `easyclaims.admin` permission grants access to `/claim admin` commands (config, set, reload).
 
 ---
 
