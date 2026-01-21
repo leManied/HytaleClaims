@@ -36,9 +36,9 @@ import java.util.UUID;
  * All functionality is accessed through /claim <subcommand>
  *
  * Subcommands:
+ *   (no args)                - Open chunk visualizer GUI
  *   gui                      - Open chunk visualizer GUI
  *   settings                 - Manage trusted players GUI
- *   claim                    - Claim current chunk
  *   unclaim                  - Unclaim current chunk
  *   unclaimall               - Unclaim all your chunks
  *   list                     - List all your claims
@@ -95,7 +95,7 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
         String[] args = parseArgs(ctx);
 
         if (args.length == 0) {
-            showHelp(playerData);
+            handleGui(playerData, store, playerRef, world, false);
             return;
         }
 
@@ -110,9 +110,6 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
                 break;
             case "settings":
                 handleSettings(playerData, store, playerRef, world);
-                break;
-            case "claim":
-                handleClaim(playerData, store, playerRef, world);
                 break;
             case "unclaim":
                 handleUnclaim(playerData, store, playerRef, world);
@@ -343,49 +340,6 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
         });
     }
 
-    // ===== CLAIM =====
-    private void handleClaim(PlayerRef playerData, Store<EntityStore> store, Ref<EntityStore> playerRef, World world) {
-        UUID playerId = playerData.getUuid();
-        String worldName = world.getName();
-
-        TransformComponent transform = store.getComponent(playerRef, TransformComponent.getComponentType());
-        Vector3d position = transform.getPosition();
-
-        int chunkX = ChunkUtil.chunkCoordinate((int) position.getX());
-        int chunkZ = ChunkUtil.chunkCoordinate((int) position.getZ());
-
-        ClaimManager claimManager = plugin.getClaimManager();
-        int currentClaims = claimManager.getPlayerClaims(playerId).getClaimCount();
-        int maxClaims = claimManager.getMaxClaims(playerId);
-
-        ClaimManager.ClaimResult result = claimManager.claimChunk(playerId, worldName, position.getX(), position.getZ());
-
-        switch (result) {
-            case SUCCESS:
-                playerData.sendMessage(Message.raw("Claimed chunk [" + chunkX + ", " + chunkZ + "]").color(GREEN));
-                playerData.sendMessage(Message.raw("Claims: " + (currentClaims + 1) + "/" + maxClaims).color(GRAY));
-                plugin.refreshWorldMapChunk(worldName, chunkX, chunkZ);
-                break;
-            case ALREADY_OWN:
-                playerData.sendMessage(Message.raw("You already own this chunk!").color(YELLOW));
-                break;
-            case CLAIMED_BY_OTHER:
-                UUID owner = claimManager.getOwnerAt(worldName, position.getX(), position.getZ());
-                String ownerName = owner != null ? plugin.getClaimStorage().getPlayerName(owner) : "Unknown";
-                playerData.sendMessage(Message.raw("This chunk is claimed by " + ownerName).color(RED));
-                break;
-            case LIMIT_REACHED:
-                playerData.sendMessage(Message.raw("Claim limit reached! (" + currentClaims + "/" + maxClaims + ")").color(RED));
-                playerData.sendMessage(Message.raw("Play more to earn additional claims.").color(GRAY));
-                break;
-            case TOO_CLOSE_TO_OTHER_CLAIM:
-                playerData.sendMessage(Message.raw("Cannot claim here - too close to another player's claim!").color(RED));
-                int buffer = plugin.getPluginConfig().getClaimBufferSize();
-                playerData.sendMessage(Message.raw("Claims must be at least " + buffer + " chunks away from other players.").color(GRAY));
-                break;
-        }
-    }
-
     // ===== UNCLAIM =====
     private void handleUnclaim(PlayerRef playerData, Store<EntityStore> store, Ref<EntityStore> playerRef, World world) {
         TransformComponent transform = store.getComponent(playerRef, TransformComponent.getComponentType());
@@ -580,9 +534,9 @@ public class EasyClaimsCommand extends AbstractPlayerCommand {
     // ===== HELP =====
     private void showHelp(PlayerRef playerData) {
         playerData.sendMessage(Message.raw("=== EasyClaims Commands ===").color(GOLD));
+        playerData.sendMessage(Message.raw("/claim - Open claim manager").color(GRAY));
         playerData.sendMessage(Message.raw("/claim gui - Open claim manager").color(GRAY));
         playerData.sendMessage(Message.raw("/claim settings - Manage trusted players").color(GRAY));
-        playerData.sendMessage(Message.raw("/claim claim - Claim current chunk").color(GRAY));
         playerData.sendMessage(Message.raw("/claim unclaim - Unclaim current chunk").color(GRAY));
         playerData.sendMessage(Message.raw("/claim unclaimall - Remove all claims").color(GRAY));
         playerData.sendMessage(Message.raw("/claim list - List your claims").color(GRAY));
